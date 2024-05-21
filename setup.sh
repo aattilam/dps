@@ -13,7 +13,7 @@ touch /etc/apt/sources.list
 cat <<EOT >> /etc/apt/sources.list
 
 deb http://deb.debian.org/debian testing main contrib non-free non-free-firmware
-deb-src http://deb.debian.org/debian testing main contrib non-free non-free firmware
+deb-src http://deb.debian.org/debian testing main contrib non-free non-free-firmware
 
 deb http://deb.debian.org/debian-security/ testing-security main contrib non-free
 deb-src http://deb.debian.org/debian-security/ testing-security main contrib non-free
@@ -26,8 +26,7 @@ apt-get update && apt-get upgrade -y && apt-get autoremove -y
 
 echo "Installing base packages"
 apt-get install -y gnome-core libreoffice libreoffice-gnome gnome-tweaks curl git htop gnome-boxes software-properties-gtk flatpak network-manager gnome-software-plugin-flatpak chrome-gnome-shell qgnomeplatform-qt5 adwaita-qt adwaita-qt6 firmware-linux-nonfree firmware-misc-nonfree rar unrar libavcodec-extra gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi ffmpeg lm-sensors isenkram network-manager-gnome wget libgtk2.0-0:i386
-apt-get purge -y firefox-esr gnome-characters gnome-contacts gnome-font-viewer
-apt-get autoremove -y
+apt-get purge -y firefox-esr
 apt-get install firefox -y
 
 dpkg --add-architecture i386 && apt update
@@ -82,19 +81,7 @@ echo "Interface management enabled in /etc/NetworkManager/NetworkManager.conf"
 
 
 echo "Installing wine"
-mkdir -pm755 /etc/apt/keyrings
-wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-cat <<EOT >> /etc/apt/sources.list.d/winehq-sid.sources
-Types: deb
-URIs: https://dl.winehq.org/wine-builds/debian
-Suites: sid
-Components: main
-Architectures: amd64 i386
-Signed-By: /etc/apt/keyrings/winehq-archive.key
-EOT
-
-apt-get update
-apt-get install --install-recommends winehq-stable -y
+apt-get install -y wine wine32 wine64 libwine libwine:i386 fonts-wine
 
 echo "Setting up gtk themes"
 wget https://github.com/lassekongo83/adw-gtk3/releases/download/v5.3/adw-gtk3v5.3.tar.xz
