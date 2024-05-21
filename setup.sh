@@ -1,0 +1,134 @@
+#!/bin/bash
+
+if [[ "$EUID" -ne 0 ]]; then
+  echo "Please run this script with sudo."
+  exit 1
+fi
+
+echo "Setting up repositories"
+
+rm /etc/apt/sources.list
+touch /etc/apt/sources.list
+
+cat <<EOT >> /etc/apt/sources.list
+
+deb http://deb.debian.org/debian testing main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian testing main contrib non-free non-free firmware
+
+deb http://deb.debian.org/debian-security/ testing-security main contrib non-free
+deb-src http://deb.debian.org/debian-security/ testing-security main contrib non-free
+
+deb http://deb.debian.org/debian sid main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian sid main contrib non-free non-free-firmware
+EOT
+
+apt-get update && apt-get upgrade -y && apt-get autoremove -y
+
+echo "Installing base packages"
+apt-get install -y gnome-core libreoffice libreoffice-gnome gnome-tweaks curl git htop gnome-boxes software-properties-gtk flatpak network-manager gnome-software-plugin-flatpak chrome-gnome-shell qgnomeplatform-qt5 adwaita-qt adwaita-qt6 firmware-linux-nonfree firmware-misc-nonfree rar unrar libavcodec-extra gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi ffmpeg lm-sensors isenkram network-manager-gnome wget libgtk2.0-0:i386
+apt-get purge -y firefox-esr gnome-characters gnome-contacts gnome-font-viewer
+apt-get autoremove -y
+apt-get install firefox -y
+
+dpkg --add-architecture i386 && apt update
+
+echo "Setting up flathub"
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+echo "Installing kernel headers"
+apt-get update -y
+apt-get install -y linux-headers-amd64
+
+echo "Installing drivers"
+
+graphics=$(lspci -nn | egrep -i "3d|display|vga")
+
+# Check if the output contains NVIDIA
+if echo "$graphics" | grep -qi "NVIDIA"; then
+  apt-get install -y nvidia-detect nvidia-driver nvidia-smi mesa-vulkan-drivers libglx-mesa0:i386 mesa-vulkan-drivers:i386 libgl1-mesa-dri:i386
+# Check if the output contains AMD
+elif echo "$graphics" | grep -qi "AMD"; then
+  apt-get install -y firmware-amd-graphics libgl1-mesa-dri libvulkan1 vulkan-tools vulkan-validationlayers libdrm-amdgpu1 libglx-mesa0 mesa-vulkan-drivers libglx-mesa0:i386 mesa-vulkan-drivers:i386 libgl1-mesa-dri:i386 radeontop fancontrol
+fi
+
+isenkram-autoinstall-firmware
+
+echo "Fixing NetworkManager https://wiki.debian.org/NetworkManager#Wired_Networks_are_Unmanaged"
+
+nmandefault="# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+"
+
+cp /etc/network/interfaces /etc/network/interfaces.bak
+echo "$nmandefault" > /etc/network/interfaces
+
+if grep -q "^\[ifupdown\]" /etc/NetworkManager/NetworkManager.conf; then
+    if grep -q "^\[ifupdown\]" /etc/NetworkManager/NetworkManager.conf && grep -q "^managed=" /etc/NetworkManager/NetworkManager.conf; then
+        sed -i '/^\[ifupdown\]/,/^$/ {s/^managed=.*/managed=true/;}' /etc/NetworkManager/NetworkManager.conf
+    else
+        sed -i '/^\[ifupdown\]/ a managed=true' /etc/NetworkManager/NetworkManager.conf
+    fi
+else
+    echo -e "\n[ifupdown]\nmanaged=true" >> /etc/NetworkManager/NetworkManager.conf
+fi
+
+echo "Interface management enabled in /etc/NetworkManager/NetworkManager.conf"
+
+
+echo "Installing wine"
+mkdir -pm755 /etc/apt/keyrings
+wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
+cat <<EOT >> /etc/apt/sources.list.d/winehq-sid.sources
+Types: deb
+URIs: https://dl.winehq.org/wine-builds/debian
+Suites: sid
+Components: main
+Architectures: amd64 i386
+Signed-By: /etc/apt/keyrings/winehq-archive.key
+EOT
+
+apt-get update
+apt-get install --install-recommends winehq-stable -y
+
+echo "Setting up gtk themes"
+wget https://github.com/lassekongo83/adw-gtk3/releases/download/v5.3/adw-gtk3v5.3.tar.xz
+tar -xf adw-gtk3v5.3.tar.xz -C /usr/share/themes
+flatpak install -y org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
+rm adw-gtk3v5.3.tar.xz
+
+echo "Installing additional software"
+
+while true; do
+    read -p "Do you want to install steam and lutris? (y/n) " yn
+
+    case $yn in 
+        [yY] ) apt-get install -y steam-installer lutris;
+            break;;
+        [nN] ) echo " ";
+            break;;
+        * ) echo invalid response;;
+    esac
+done
+
+while true; do
+    read -p "Do you want to install the liquorix kernel? (y/n) " yn
+
+    case $yn in 
+        [yY] ) curl 'https://liquorix.net/install-liquorix.sh' -o liquorix.sh; chmod +x liquorix.sh; ./liquorix.sh; rm liqourix.sh;
+            break;;
+        [nN] ) echo " ";
+            break;;
+        * ) echo invalid response;;
+    esac
+done
+
+echo "After rebooting set the theme in gnome-tweaks to adw-gtk3"
+echo "Done. Rebooting in 10 seconds."
+sleep 10
+reboot now
