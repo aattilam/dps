@@ -117,6 +117,9 @@ while true; do
     esac
 done
 
+cd..
+rm -r dps/
+
 echo "After rebooting set the theme in gnome-tweaks to adw-gtk3"
 echo "Done. Rebooting in 10 seconds."
 sleep 10
