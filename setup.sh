@@ -5,6 +5,8 @@ if [[ "$EUID" -ne 0 ]]; then
   exit 1
 fi
 
+export DEBIAN_FRONTEND=noninteractive
+
 echo "Setting up repositories"
 
 rm /etc/apt/sources.list
