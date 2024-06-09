@@ -118,8 +118,9 @@ while true; do
 done
 
 mkdir -p /etc/skel/.config/autostart
-mkdir -p .config/autostart
-cp dconf-settings.conf /etc/skel/.config/autostart/
+cp dconf-settings.conf /etc/skel/.config
+cp dconf.sh /etc/skel/.config/autostart/
+
 cd..
 rm -r dps/
 
