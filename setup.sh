@@ -90,6 +90,8 @@ tar -xf adw-gtk3v5.3.tar.xz -C /usr/share/themes
 flatpak install -y org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
 rm adw-gtk3v5.3.tar.xz
 
+chmod +x dconf.sh
+
 for dir in /home/*; do
     if [ -d "$dir" ]; then
         username=$(basename "$dir")
