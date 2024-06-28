@@ -29,7 +29,7 @@ apt-get update && apt-get upgrade -y && apt-get autoremove -y
 echo "Installing base packages"
 apt-get install -y gnome-core libreoffice libreoffice-gnome gnome-tweaks curl git htop gnome-boxes software-properties-gtk flatpak network-manager gnome-software-plugin-flatpak chrome-gnome-shell adwaita-qt adwaita-qt6 firmware-linux-nonfree firmware-misc-nonfree rar unrar libavcodec-extra gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi ffmpeg lm-sensors isenkram network-manager-gnome wget
 apt-get purge -y firefox-esr
-apt-get install firefox -y
+apt-get install firefox gnome-shell-extension-appindicator gnome-shell-extension-arc-menu gnome-shell-extension-dash-to-panel gnome-shell-extension-desktop-icons-ng  -y
 
 dpkg --add-architecture i386 && apt update
 
@@ -91,6 +91,24 @@ tar -xf adw-gtk3v5.3.tar.xz -C /usr/share/themes
 flatpak install -y org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
 rm adw-gtk3v5.3.tar.xz
 
+for dir in /home/*; do
+    if [ -d "$dir" ]; then
+        username=$(basename "$dir")
+        if [ "$username" != "root" ]; then
+            mkdir -p .config/autostart
+            mkdir -p .config/autostart-scripts
+            cp dconf-settings.conf .config
+            cp dconf.sh .config/autostart-scripts
+            cp dconf-load.desktop .config/autostart
+        fi
+    fi
+
+mkdir -p /etc/skel/.config/autostart
+mkdir -p /etc/skel/.config/autostart-scripts
+cp dconf-settings.conf /etc/skel/.config
+cp dconf-load.desktop /etc/skel/.config/autostart
+cp dconf.sh /etc/skel/.config/autostart-scripts
+
 echo "Installing additional software"
 
 while true; do
@@ -117,14 +135,9 @@ while true; do
     esac
 done
 
-mkdir -p /etc/skel/.config/autostart
-cp dconf-settings.conf /etc/skel/.config
-cp dconf.sh /etc/skel/.config/autostart/
-
 cd..
-rm -r dps/
+rm -rf dps/
 
-echo "After rebooting set the theme in gnome-tweaks to adw-gtk3"
 echo "Done. Rebooting in 10 seconds."
 sleep 10
 reboot now
