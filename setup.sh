@@ -32,21 +32,11 @@ apt-get install -y gnome-core libreoffice libreoffice-gnome gnome-tweaks curl gi
 apt-get purge -y firefox-esr
 apt-get install -y firefox
 
-cat <<EOT >> /etc/apt/sources.list.d/extension.list
-deb http://deb.debian.org/debian stable main contrib non-free non-free-firmware
-EOT
+wget -O gnome-shell-extension-installer "https://github.com/brunelli/gnome-shell-extension-installer/raw/master/gnome-shell-extension-installer"
+chmod +x gnome-shell-extension-installer
+mv gnome-shell-extension-installer /usr/bin/
 
-cat <<EOT >> /etc/apt/preferences.d/gnome-shell-extension.pref
-Package: gnome-shell-extension-*
-Pin: release a=stable
-Pin-Priority: 1001
-EOT
-
-apt-get update
-apt-get install -y gnome-shell-extension-appindicator gnome-shell-extension-tiling-assistant gnome-shell-extension-arc-menu gnome-shell-extension-dash-to-panel gnome-shell-extension-desktop-icons-ng
-
-rm /etc/apt/sources.list.d/extension.list /etc/apt/preferences.d/gnome-shell-extension.pref
-apt-get update && apt-get upgrade -y && apt-get autoremove -y
+gnome-shell-extension-installer 615 3733 3628 1160 2087 --yes
 
 echo "Setting up flathub"
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
