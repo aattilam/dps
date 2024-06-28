@@ -32,12 +32,6 @@ apt-get install -y gnome-core libreoffice libreoffice-gnome gnome-tweaks curl gi
 apt-get purge -y firefox-esr
 apt-get install -y firefox
 
-wget -O gnome-shell-extension-installer "https://github.com/brunelli/gnome-shell-extension-installer/raw/master/gnome-shell-extension-installer"
-chmod +x gnome-shell-extension-installer
-mv gnome-shell-extension-installer /usr/bin/
-
-gnome-shell-extension-installer 615 3733 3628 1160 2087 --yes
-
 echo "Setting up flathub"
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
