@@ -142,7 +142,7 @@ while true; do
     esac
 done
 
-cd..
+cd ..
 rm -rf dps/
 
 echo "Done. Rebooting in 10 seconds."
