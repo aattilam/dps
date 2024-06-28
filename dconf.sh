@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 install_gnome_extension() {
   uuid=$1
   shell_version=$2
