@@ -110,6 +110,12 @@ cp dconf-settings.conf /etc/skel/.config
 cp dconf-load.desktop /etc/skel/.config/autostart
 cp dconf.sh /etc/skel/.config/autostart-scripts
 
+git clone https://github.com/vinceliuice/grub2-themes.git
+cd grub2-themes
+sudo ./install.sh -t tela -s 1080p
+cd ..
+rm -r grub2-themes
+
 echo "Installing additional software"
 
 while true; do
