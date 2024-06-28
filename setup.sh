@@ -95,14 +95,24 @@ for dir in /home/*; do
     if [ -d "$dir" ]; then
         username=$(basename "$dir")
         if [ "$username" != "root" ]; then
-            mkdir -p $dir/.config/autostart
-            mkdir -p $dir/.config/autostart-scripts
-            cp dconf-settings.conf $dir/.config
-            cp dconf.sh $dir/.config/autostart-scripts
-            cp dconf-load.desktop $dir/.config/autostart
+            mkdir -p "$dir/.config/autostart"
+            chown "$username:$username" "$dir/.config/autostart"
+            
+            mkdir -p "$dir/.config/autostart-scripts"
+            chown "$username:$username" "$dir/.config/autostart-scripts"
+            
+            cp dconf-settings.conf "$dir/.config/"
+            chown "$username:$username" "$dir/.config/dconf-settings.conf"
+            
+            cp dconf.sh "$dir/.config/autostart-scripts/"
+            chown "$username:$username" "$dir/.config/autostart-scripts/dconf.sh"
+            
+            cp dconf-load.desktop "$dir/.config/autostart/"
+            chown "$username:$username" "$dir/.config/autostart/dconf-load.desktop"
         fi
     fi
 done
+
 
 mkdir -p /etc/skel/.config/autostart
 mkdir -p /etc/skel/.config/autostart-scripts
