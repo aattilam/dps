@@ -24,14 +24,13 @@ deb http://deb.debian.org/debian sid main contrib non-free non-free-firmware
 deb-src http://deb.debian.org/debian sid main contrib non-free non-free-firmware
 EOT
 
+dpkg --add-architecture i386
 apt-get update && apt-get upgrade -y && apt-get autoremove -y
 
 echo "Installing base packages"
 apt-get install -y gnome-core libreoffice libreoffice-gnome gnome-tweaks curl git htop gnome-boxes software-properties-gtk flatpak network-manager gnome-software-plugin-flatpak chrome-gnome-shell adwaita-qt adwaita-qt6 firmware-linux-nonfree firmware-misc-nonfree rar unrar libavcodec-extra gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi ffmpeg lm-sensors isenkram network-manager-gnome wget
 apt-get purge -y firefox-esr
 apt-get install firefox gnome-shell-extension-appindicator gnome-shell-extension-tiling-assistant gnome-shell-extension-arc-menu gnome-shell-extension-dash-to-panel gnome-shell-extension-desktop-icons-ng  -y
-
-dpkg --add-architecture i386 && apt update
 
 echo "Setting up flathub"
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
