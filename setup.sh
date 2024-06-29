@@ -97,18 +97,12 @@ for dir in /home/*; do
         if [ "$username" != "root" ]; then
             mkdir -p "$dir/.config/autostart"
             chown "$username:$username" "$dir/.config/autostart"
-            
-            mkdir -p "$dir/.config/autostart-scripts"
-            chown "$username:$username" "$dir/.config/autostart-scripts"
-            
             cp dconf-settings.conf "$dir/.config/"
+            cp dconf.sh "$dir/.config
+            cp dconf-load.desktop "$dir/.config
             chown "$username:$username" "$dir/.config/dconf-settings.conf"
-            
-            cp dconf.sh "$dir/.config/autostart-scripts/"
-            chown "$username:$username" "$dir/.config/autostart-scripts/dconf.sh"
-            
-            cp dconf-load.desktop "$dir/.config/autostart/"
-            chown "$username:$username" "$dir/.config/autostart/dconf-load.desktop"
+            chown "$username:$username" "$dir/.config/dconf.sh"
+            chown "$username:$username" "$dir/.config/dconf-load.desktop"
         fi
     fi
 done
