@@ -99,10 +99,10 @@ for dir in /home/*; do
             chown "$username:$username" "$dir/.config/autostart"
             cp dconf-settings.conf "$dir/.config/"
             cp dconf.sh "$dir/.config/"
-            cp dconf-load.desktop "$dir/.config/"
+            cp dconf-load.desktop "$dir/.config/autostart/"
             chown "$username:$username" "$dir/.config/dconf-settings.conf"
             chown "$username:$username" "$dir/.config/dconf.sh"
-            chown "$username:$username" "$dir/.config/dconf-load.desktop"
+            chown "$username:$username" "$dir/.config/autostart/dconf-load.desktop"
         fi
     fi
 done
