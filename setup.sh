@@ -98,15 +98,14 @@ for dir in /home/*; do
             mkdir -p "$dir/.config/autostart"
             chown "$username:$username" "$dir/.config/autostart"
             cp dconf-settings.conf "$dir/.config/"
-            cp dconf.sh "$dir/.config
-            cp dconf-load.desktop "$dir/.config
+            cp dconf.sh "$dir/.config/"
+            cp dconf-load.desktop "$dir/.config/"
             chown "$username:$username" "$dir/.config/dconf-settings.conf"
             chown "$username:$username" "$dir/.config/dconf.sh"
             chown "$username:$username" "$dir/.config/dconf-load.desktop"
         fi
     fi
 done
-
 
 mkdir -p /etc/skel/.config/autostart
 mkdir -p /etc/skel/.config/autostart-scripts
