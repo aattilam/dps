@@ -1,4 +1,13 @@
 #!/bin/bash
+zenity --info \
+       --title="System Update" \
+       --text="The system will update. Please wait a moment." \
+       --no-wrap \
+       --no-markup \
+       --width=300 \
+       --height=100 \
+       --timeout=10
+
 install_gnome_extension() {
   uuid=$1
   shell_version=$2
