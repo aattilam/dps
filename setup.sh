@@ -79,7 +79,6 @@ fi
 
 echo "Interface management enabled in /etc/NetworkManager/NetworkManager.conf"
 
-
 echo "Installing wine"
 apt-get install -y wine wine32 wine64 libwine libwine:i386 fonts-wine
 
@@ -91,21 +90,20 @@ rm adw-gtk3v5.3.tar.xz
 
 chmod +x dconf.sh
 
+sudo -u $(logname) bash << 'EOF'
+
 for dir in /home/*; do
     if [ -d "$dir" ]; then
         username=$(basename "$dir")
         if [ "$username" != "root" ]; then
             mkdir -p "$dir/.config/autostart"
-            chown "$username:$username" "$dir/.config/autostart"
             cp dconf-settings.conf "$dir/.config/"
             cp dconf.sh "$dir/.config/"
             cp dconf-load.desktop "$dir/.config/autostart/"
-            chown "$username:$username" "$dir/.config/dconf-settings.conf"
-            chown "$username:$username" "$dir/.config/dconf.sh"
-            chown "$username:$username" "$dir/.config/autostart/dconf-load.desktop"
         fi
     fi
 done
+EOF
 
 mkdir -p /etc/skel/.config/autostart
 mkdir -p /etc/skel/.config/autostart-scripts
@@ -137,7 +135,7 @@ while true; do
     read -p "Do you want to install the liquorix kernel? (y/n) " yn
 
     case $yn in 
-        [yY] ) curl 'https://liquorix.net/install-liquorix.sh' -o liquorix.sh; chmod +x liquorix.sh; ./liquorix.sh; rm liqourix.sh;
+        [yY] ) curl 'https://liquorix.net/install-liquorix.sh' -o liquorix.sh; chmod +x liquorix.sh; ./liquorix.sh; rm liquorix.sh;
             break;;
         [nN] ) echo " ";
             break;;
