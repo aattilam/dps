@@ -1,13 +1,10 @@
 #!/bin/bash
-zenity --info \
-       --title="System Update" \
-       --text="The system will update. Please wait a moment." \
-       --no-wrap \
-       --no-markup \
-       --width=300 \
-       --height=100 \
-       --timeout=100
 
+(
+echo 0
+sleep 1
+
+# Function to install GNOME extension
 install_gnome_extension() {
   uuid=$1
   shell_version=$2
@@ -22,7 +19,10 @@ install_gnome_extension() {
     echo "Failed to find download URL for extension: $uuid"
   fi
 }
+
 shell_version=$(gnome-shell --version | grep -oP '\d+\.\d+')
+
+# Extensions list
 extensions=(
   "appindicatorsupport@rgcjonas.gmail.com"
   "tiling-assistant@leleat-on-github"
@@ -30,11 +30,46 @@ extensions=(
   "dash-to-panel@jderose9.github.com"
   "ding@rastersoft.com"
 )
+
+total_steps=$(( ${#extensions[@]} + 3 ))  # Number of extensions + dconf load + gsettings + cleanup
+current_step=0
+
 for uuid in "${extensions[@]}"; do
   install_gnome_extension "$uuid" "$shell_version"
+  current_step=$((current_step + 1))
+  progress=$((current_step * 100 / total_steps))
+  echo $progress
 done
 
+# Load GNOME settings
 dconf load / < ~/.config/gnome-settings.conf
-gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark' && gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-rm -f ~/.config/gnome-settings.conf ~/.config/dconf.sh &
+current_step=$((current_step + 1))
+progress=$((current_step * 100 / total_steps))
+echo $progress
+
+# Set GTK theme
+gsettings set org.gnome.desktop.interface gtk-theme 'adw-gtk3-dark'
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+current_step=$((current_step + 1))
+progress=$((current_step * 100 / total_steps))
+echo $progress
+
+# Clean up
+rm -f ~/.config/gnome-settings.conf ~/.config/dconf.sh
+current_step=$((current_step + 1))
+progress=$((current_step * 100 / total_steps))
+echo $progress
+
+echo 100
+sleep 1
+
+# Logout the session
 gnome-session-quit --logout --no-prompt
+
+) | zenity --progress \
+            --title="System Update" \
+            --text="The system will update. Please wait a moment." \
+            --percentage=0 \
+            --no-cancel \
+            --width=300 \
+            --height=100
