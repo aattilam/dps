@@ -41,6 +41,9 @@ for uuid in "${extensions[@]}"; do
   echo $progress
 done
 
+for extension in "${extensions[@]}"; do
+    gnome-extensions enable "$extension"
+done
 # Load GNOME settings
 gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com tiling-assistant@leleat-on-github arcmenu@arcmenu.com dash-to-panel@jderose9.github.com ding@rastersoft.com
 dconf load / < ~/.config/gnome-settings.conf
