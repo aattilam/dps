@@ -42,6 +42,7 @@ for uuid in "${extensions[@]}"; do
 done
 
 # Load GNOME settings
+gnome-extensions enable appindicatorsupport@rgcjonas.gmail.com tiling-assistant@leleat-on-github arcmenu@arcmenu.com dash-to-panel@jderose9.github.com ding@rastersoft.com
 dconf load / < ~/.config/gnome-settings.conf
 current_step=$((current_step + 1))
 progress=$((current_step * 100 / total_steps))
@@ -64,7 +65,7 @@ echo 100
 sleep 1
 
 # Logout the session
-reboot now
+gnome-session-quit --logout --no-prompt
 
 ) | zenity --progress \
             --title="System Update" \
