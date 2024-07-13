@@ -6,7 +6,7 @@ zenity --info \
        --no-markup \
        --width=300 \
        --height=100 \
-       --timeout=10
+       --timeout=100
 
 install_gnome_extension() {
   uuid=$1
