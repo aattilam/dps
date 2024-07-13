@@ -64,7 +64,7 @@ echo 100
 sleep 1
 
 # Logout the session
-gnome-session-quit --logout --no-prompt
+reboot now
 
 ) | zenity --progress \
             --title="System Update" \
