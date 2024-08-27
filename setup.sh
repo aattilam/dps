@@ -110,7 +110,5 @@ rm -r grub2-themes
 ##cd ..
 ##rm -rf dps/
 
-echo "Done. Rebooting in 10 seconds."
+echo "The installation is complete, please reboot"
 passwd -d root
-sleep 10
-reboot now
