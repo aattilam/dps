@@ -3,9 +3,10 @@
 
 ### Usage:
 1. Load the pressed file https://wiki.debian.org/DebianInstaller/Preseed#Loading_the_preseeding_file_from_a_webserver
-   - In the graphical installer boot menu select **Help**
-   - Click on the **boot** promt at the bottom
-   - Type "auto url=https://raw.githubusercontent.com/aattilam/dps/main/preseed.cfg debian-installer/allow_unauthenticated_ssl=true"
+   - In the boot menu select **Help**
+   - Look for the the **boot** promt at the bottom
+   - Type "auto url=https://raw.githubusercontent.com/aattilam/dps/main/preseed.cfg"
+   - Press enter
 2. Install Debian stable or testing
 3. Restart and then login with root account (password is root)
 4. Run the following command:
