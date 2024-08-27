@@ -56,7 +56,8 @@ if laptop-detect >/dev/null 2>&1; then
     echo "Laptop detected. Installing task-laptop package..."
     apt-get install -y task-laptop
 else
-    echo "No laptop detected. Skipping task-laptop installation."
+    echo "No laptop detected installing lqx kernel."
+    curl 'https://liquorix.net/install-liquorix.sh' -o liquorix.sh; chmod +x liquorix.sh; ./liquorix.sh; rm liquorix.sh;
 fi
 
 echo "Fixing NetworkManager https://wiki.debian.org/NetworkManager#Wired_Networks_are_Unmanaged"
@@ -100,32 +101,6 @@ cd grub2-themes
 sudo ./install.sh -t tela -s 1080p
 cd ..
 rm -r grub2-themes
-
-echo "Installing additional software"
-
-while true; do
-    read -p "Do you want to install steam and lutris? (y/n) " yn
-
-    case $yn in 
-        [yY] ) apt-get install -y steam-installer lutris libgtk2.0-0:i386;
-            break;;
-        [nN] ) echo " ";
-            break;;
-        * ) echo invalid response;;
-    esac
-done
-
-while true; do
-    read -p "Do you want to install the liquorix kernel? (y/n) " yn
-
-    case $yn in 
-        [yY] ) curl 'https://liquorix.net/install-liquorix.sh' -o liquorix.sh; chmod +x liquorix.sh; ./liquorix.sh; rm liquorix.sh;
-            break;;
-        [nN] ) echo " ";
-            break;;
-        * ) echo invalid response;;
-    esac
-done
 
 ## custom premade config
 
