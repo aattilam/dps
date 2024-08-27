@@ -28,7 +28,7 @@ dpkg --add-architecture i386
 apt-get update && apt-get upgrade -y && apt-get autoremove -y
 
 echo "Installing base packages"
-apt-get install -y gnome-core zenity gir1.2-gnomedesktop-3.0 libreoffice libreoffice-gnome gnome-tweaks curl git htop gnome-boxes software-properties-gtk flatpak network-manager gnome-software-plugin-flatpak chrome-gnome-shell adwaita-qt adwaita-qt6 firmware-linux-nonfree firmware-misc-nonfree rar unrar libavcodec-extra gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi ffmpeg lm-sensors isenkram network-manager-gnome wget
+apt-get install -y gnome-core zenity gir1.2-gnomedesktop-3.0 libreoffice libreoffice-gnome gnome-tweaks curl git htop gnome-boxes software-properties-gtk laptop-detect flatpak network-manager gnome-software-plugin-flatpak chrome-gnome-shell adwaita-qt adwaita-qt6 firmware-linux-nonfree firmware-misc-nonfree rar unrar libavcodec-extra gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi ffmpeg lm-sensors isenkram network-manager-gnome wget
 apt-get purge -y firefox-esr
 apt-get install -y firefox
 
@@ -51,6 +51,13 @@ elif echo "$graphics" | grep -qi "AMD"; then
 fi
 
 isenkram-autoinstall-firmware
+
+if laptop-detect >/dev/null 2>&1; then
+    echo "Laptop detected. Installing task-laptop package..."
+    apt-get install -y task-laptop
+else
+    echo "No laptop detected. Skipping task-laptop installation."
+fi
 
 echo "Fixing NetworkManager https://wiki.debian.org/NetworkManager#Wired_Networks_are_Unmanaged"
 
