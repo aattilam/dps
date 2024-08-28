@@ -28,7 +28,7 @@ dpkg --add-architecture i386
 apt-get update && apt-get upgrade -y && apt-get autoremove -y
 
 echo "Installing base packages"
-apt-get install -y gnome-core zenity gir1.2-gnomedesktop-3.0 libreoffice libreoffice-gnome gnome-tweaks curl git htop gnome-boxes software-properties-gtk laptop-detect flatpak network-manager gnome-software-plugin-flatpak chrome-gnome-shell adwaita-qt adwaita-qt6 firmware-linux-nonfree firmware-misc-nonfree rar unrar libavcodec-extra gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi ffmpeg lm-sensors isenkram network-manager-gnome wget
+apt-get install -y gnome-core zenity gir1.2-gnomedesktop-3.0 libreoffice libreoffice-gnome sudo gnome-tweaks gnome-initial-setup curl git htop gnome-boxes software-properties-gtk laptop-detect flatpak network-manager gnome-software-plugin-flatpak chrome-gnome-shell adwaita-qt adwaita-qt6 firmware-linux-nonfree firmware-misc-nonfree rar unrar libavcodec-extra gstreamer1.0-libav gstreamer1.0-plugins-ugly gstreamer1.0-vaapi ffmpeg lm-sensors isenkram network-manager-gnome wget
 apt-get purge -y firefox-esr
 apt-get install -y firefox
 
@@ -98,7 +98,7 @@ rm adw-gtk3v5.3.tar.xz
 
 git clone https://github.com/vinceliuice/grub2-themes.git
 cd grub2-themes
-sudo ./install.sh -t tela -s 1080p
+./install.sh -t tela -s 1080p
 cd ..
 rm -r grub2-themes
 
