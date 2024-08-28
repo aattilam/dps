@@ -91,8 +91,12 @@ echo "Installing wine"
 apt-get install -y wine wine32 wine64 libwine libwine:i386 fonts-wine
 
 echo "Setting up gtk themes"
+mkdir -p /etc/skel
+mkdir -p /etc/skel/.themes
+
 wget https://github.com/lassekongo83/adw-gtk3/releases/download/v5.3/adw-gtk3v5.3.tar.xz
 tar -xf adw-gtk3v5.3.tar.xz -C /usr/share/themes
+tar -xf adw-gtk3v5.3.tar.xz -C /etc/skel/.themes
 flatpak install -y org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
 rm adw-gtk3v5.3.tar.xz
 
@@ -101,14 +105,6 @@ cd grub2-themes
 ./install.sh -t tela -s 1080p
 cd ..
 rm -r grub2-themes
-
-## custom premade config
-
-## git clone https://github.com/aattilam/dps.git
-##cd dps
-##mkdir -p /etc/skel
-##cd ..
-##rm -rf dps/
 
 echo "The installation is complete, please reboot"
 passwd -d root
