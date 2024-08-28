@@ -106,5 +106,6 @@ cd grub2-themes
 cd ..
 rm -r grub2-themes
 
+apt-get autoremove -y
 echo "The installation is complete, please reboot"
 passwd -d root
